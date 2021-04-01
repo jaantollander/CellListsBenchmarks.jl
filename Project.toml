@@ -1,0 +1,9 @@
+name = "CellListsBenchmarks"
+uuid = "61c2ef4d-6636-41ac-a606-60f4d990b9ef"
+authors = ["Jaan Tollander de Balsch <jaan@hey.com>"]
+version = "0.1.0"
+
+[deps]
+ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+JLD = "4138dd39-2aa7-5051-a626-17a0bb65d9c8"
