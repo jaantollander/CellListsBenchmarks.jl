@@ -1,5 +1,6 @@
 module CellListsBenchmarks
 
-greet() = print("Hello World!")
+include("parallel_near_neighbors.jl")
+export benchmark_parallel_near_neighbors
 
 end # module
