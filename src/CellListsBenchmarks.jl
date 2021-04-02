@@ -1,6 +1,6 @@
 module CellListsBenchmarks
 
-include("parallel_near_neighbors.jl")
-export benchmark_parallel_near_neighbors
+include("near_neighbors.jl")
+export benchmark_near_neighbors
 
 end # module
