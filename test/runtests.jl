@@ -2,6 +2,8 @@ using Test
 using CellListsBenchmarks
 
 function test_benchmark_algorithm()
+    benchmark_algorithm(cell_list_serial, 100, 2, 0.1, 1, 1, 1.0)
+    benchmark_algorithm(cell_list_parallel, 100, 2, 0.1, 1, 1, 1.0)
     benchmark_algorithm(brute_force, 100, 2, 0.1, 1, 1, 1.0)
     benchmark_algorithm(cell_lists, 100, 2, 0.1, 1, 1, 1.0)
     @test true
