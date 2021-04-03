@@ -51,9 +51,9 @@ function benchmark_algorithm(algorithm::Function, n::Int, d::Int, r::Float64, se
     return trials
 end
 
-function benchmark_near_neighbors(n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64; parallel::Bool=false)
+function benchmark_near_neighbors(algorithm::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
     @info "Function: benchmark_near_neighbors"
-    @info "Arguments" n d r seed iterations seconds parallel nthreads()
+    @info "Arguments" algorithm n d r seed iterations seconds nthreads()
     rng = MersenneTwister(seed)
     trials = BenchmarkTools.Trial[]
     time = Time(now())
@@ -62,11 +62,7 @@ function benchmark_near_neighbors(n::Int, d::Int, r::Float64, seed::Int, iterati
         @info "Iteration: $(i) / $(iterations)"
         p = rand(rng, n, d)
         c = CellList(p, r)
-        if parallel
-            t = @benchmark p_near_neighbors($c, $p, $r) seconds=seconds
-        else
-            t = @benchmark near_neighbors($c, $p, $r) seconds=seconds
-        end
+        t = @benchmark $algorithm($c, $p, $r) seconds=seconds
         time2 = Time(now())
         @info "Time: $(Time(time2 - time))"
         time = time2
