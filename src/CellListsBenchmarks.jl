@@ -6,6 +6,7 @@ export benchmark_brute_force
 export benchmark_cell_lists
 export benchmark_near_neighbors_serial
 export benchmark_near_neighbors_parallel
+export benchmark_functions
 export run_benchmark
 
 using Base.Threads
@@ -83,6 +84,19 @@ function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::In
     end
     @info "Finished: $(Time(now()))"
     return trials
+end
+
+const benchmark_functions = Dict(
+    "cell_list_serial" => benchmark_cell_list_serial,
+    "cell_list_parallel" => benchmark_cell_list_parallel,
+    "brute_force" => benchmark_brute_force,
+    "cell_lists" => benchmark_cell_lists,
+    "near_neighbors_serial" => benchmark_near_neighbors_serial,
+    "near_neighbors_parallel" => benchmark_near_neighbors_parallel,
+)
+
+function run_benchmark(benchmark::String, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
+    run_benchmark(benchmark_functions[benchmark], n, d, r, seed, iterations, seconds)
 end
 
 end # module
