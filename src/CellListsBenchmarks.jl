@@ -1,17 +1,18 @@
 module CellListsBenchmarks
 
-export cell_list_serial, cell_list_parallel
-export brute_force, cell_lists
-export benchmark_algorithm, benchmark_near_neighbors
+export benchmark_cell_list_serial
+export benchmark_cell_list_parallel
+export benchmark_brute_force
+export benchmark_cell_lists
+export benchmark_near_neighbors_serial
+export benchmark_near_neighbors_parallel
+export run_benchmark
 
 using Base.Threads
 using Dates
 using Random
 using BenchmarkTools
 using CellLists
-
-cell_list_serial(p, r) = CellList(p, r)
-cell_list_parallel(p, r) = CellList(p, r, Val(:parallel))
 
 function brute_force(p::Array{T, 2}, r::T) where T <: AbstractFloat
     ps = Vector{Tuple{Int, Int}}()
@@ -31,38 +32,50 @@ function cell_lists(p::Array{T, 2}, r::T) where T <: AbstractFloat
     return near_neighbors(c, p, r)
 end
 
-function benchmark_algorithm(algorithm::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
-    @info "Function: benchmark_algorithm"
-    @info "Arguments" algorithm n d r seed iterations seconds nthreads()
-    rng = MersenneTwister(seed)
-    trials = BenchmarkTools.Trial[]
-    time = Time(now())
-    @info "Started: $(time)"
-    for i in 1:iterations
-        @info "Iteration: $(i) / $(iterations)"
-        p = rand(rng, n, d)
-        t = @benchmark $algorithm($p, $r) seconds=seconds
-        time2 = Time(now())
-        @info "Time: $(Time(time2 - time))"
-        time = time2
-        push!(trials, t)
-    end
-    @info "Finished: $(Time(now()))"
-    return trials
+# --- Benchmarks functions ---
+
+function benchmark_cell_list_serial(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    @benchmark CellList($p, $r) seconds=seconds
 end
 
-function benchmark_near_neighbors(algorithm::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
-    @info "Function: benchmark_near_neighbors"
-    @info "Arguments" algorithm n d r seed iterations seconds nthreads()
+function benchmark_cell_list_parallel(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    @benchmark CellList($p, $r, $Val(:parallel)) seconds=seconds
+end
+
+function benchmark_brute_force(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    @benchmark brute_force($p, $r) seconds=seconds
+end
+
+function benchmark_cell_lists(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    @benchmark cell_lists($p, $r) seconds=seconds
+end
+
+function benchmark_near_neighbors_serial(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    c = CellList(p, r)
+    @benchmark near_neighbors($c, $p, $r) seconds=seconds
+end
+
+function benchmark_near_neighbors_parallel(rng, n, d, r, seconds)
+    p = rand(rng, n, d)
+    c = CellList(p, r)
+    @benchmark p_near_neighbors($c, $p, $r) seconds=seconds
+end
+
+function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
+    @info "Function: benchmark_algorithm"
+    @info "Arguments" benchmark n d r seed iterations seconds nthreads()
     rng = MersenneTwister(seed)
     trials = BenchmarkTools.Trial[]
     time = Time(now())
     @info "Started: $(time)"
     for i in 1:iterations
         @info "Iteration: $(i) / $(iterations)"
-        p = rand(rng, n, d)
-        c = CellList(p, r)
-        t = @benchmark $algorithm($c, $p, $r) seconds=seconds
+        t = benchmark(rng, n, d, r, seconds)
         time2 = Time(now())
         @info "Time: $(Time(time2 - time))"
         time = time2

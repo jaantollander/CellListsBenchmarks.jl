@@ -12,10 +12,10 @@ r = 0.1
 seed = 1
 iterations = 1
 seconds = 1.0
-benchmark_algorithm(cell_list_serial, n, d, r, seed, iterations, seconds)
-benchmark_algorithm(cell_list_parallel, n, d, r, seed, iterations, seconds)
-benchmark_algorithm(brute_force, n, d, r, seed, iterations, seconds)
-benchmark_algorithm(cell_lists, n, d, r, seed, iterations, seconds)
-benchmark_near_neighbors(near_neighbors, n, d, r, seed, iterations, seconds)
-benchmark_near_neighbors(p_near_neighbors, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_cell_list_serial, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_cell_list_parallel, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_brute_force, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_cell_lists, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_near_neighbors_serial, n, d, r, seed, iterations, seconds)
+run_benchmark(benchmark_near_neighbors_parallel, n, d, r, seed, iterations, seconds)
 ```
