@@ -1,5 +1,4 @@
 using Test
-using CellLists
 using CellListsBenchmarks
 
 n = 100

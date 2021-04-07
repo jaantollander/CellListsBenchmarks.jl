@@ -3,7 +3,6 @@ Benchmarks for `CellLists.jl` package.
 
 ## Usage
 ```julia
-using CellLists
 using CellListsBenchmarks
 
 n = 100
