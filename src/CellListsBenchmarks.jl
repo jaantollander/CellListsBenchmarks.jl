@@ -64,7 +64,7 @@ end
 function benchmark_near_neighbors_parallel(rng, n, d, r, seconds)
     p = rand(rng, n, d)
     c = CellList(p, r)
-    @benchmark p_near_neighbors($c, $p, $r) seconds=seconds
+    @benchmark near_neighbors($c, $p, $r, $Val(:parallel)) seconds=seconds
 end
 
 function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
