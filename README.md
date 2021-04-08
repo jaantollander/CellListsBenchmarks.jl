@@ -1,5 +1,5 @@
 # CellListsBenchmarks.jl
-Benchmarks for `CellLists.jl` package.
+Benchmarks for the [CellLists.jl](https://github.com/jaantollander/CellLists.jl) package.
 
 ## Usage
 ```julia
