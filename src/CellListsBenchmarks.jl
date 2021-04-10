@@ -43,7 +43,7 @@ function benchmark_cell_list_serial(p, r, seconds)
 end
 
 function benchmark_cell_list_parallel(p, r, seconds)
-    @benchmark CellList($p, $r, $Val(:parallel)) seconds=seconds
+    @benchmark CellList($p, $r, $Val(:threads)) seconds=seconds
 end
 
 function benchmark_brute_force(p, r, seconds)
@@ -61,7 +61,7 @@ end
 
 function benchmark_near_neighbors_parallel(p, r, seconds)
     c = CellList(p, r)
-    @benchmark near_neighbors($c, $p, $r, $Val(:parallel)) seconds=seconds
+    @benchmark near_neighbors($c, $p, $r, $Val(:threads)) seconds=seconds
 end
 
 const benchmark_functions = Dict(
