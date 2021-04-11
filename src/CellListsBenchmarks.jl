@@ -1,11 +1,11 @@
 module CellListsBenchmarks
 
 export benchmark_cell_list_serial
-export benchmark_cell_list_parallel
+export benchmark_cell_list_threads
 export benchmark_brute_force
 export benchmark_cell_lists
 export benchmark_near_neighbors_serial
-export benchmark_near_neighbors_parallel
+export benchmark_near_neighbors_threads
 export benchmark_functions
 export run_benchmark
 export Benchmark
@@ -42,7 +42,7 @@ function benchmark_cell_list_serial(p, r, seconds)
     @benchmark CellList($p, $r) seconds=seconds
 end
 
-function benchmark_cell_list_parallel(p, r, seconds)
+function benchmark_cell_list_threads(p, r, seconds)
     @benchmark CellList($p, $r, $Val(:threads)) seconds=seconds
 end
 
@@ -59,18 +59,18 @@ function benchmark_near_neighbors_serial(p, r, seconds)
     @benchmark near_neighbors($c, $p, $r) seconds=seconds
 end
 
-function benchmark_near_neighbors_parallel(p, r, seconds)
+function benchmark_near_neighbors_threads(p, r, seconds)
     c = CellList(p, r)
     @benchmark near_neighbors($c, $p, $r, $Val(:threads)) seconds=seconds
 end
 
 const benchmark_functions = Dict(
     "cell_list_serial" => benchmark_cell_list_serial,
-    "cell_list_parallel" => benchmark_cell_list_parallel,
+    "cell_list_threads" => benchmark_cell_list_threads,
     "brute_force" => benchmark_brute_force,
     "cell_lists" => benchmark_cell_lists,
     "near_neighbors_serial" => benchmark_near_neighbors_serial,
-    "near_neighbors_parallel" => benchmark_near_neighbors_parallel,
+    "near_neighbors_threads" => benchmark_near_neighbors_threads,
 )
 
 
