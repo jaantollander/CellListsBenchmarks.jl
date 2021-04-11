@@ -76,7 +76,7 @@ const benchmark_functions = Dict(
 
 # --- Run benchmark ---
 
-function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
+function run_benchmark(benchmark::Function, n::Int, d::Int, r::T, seed::Int, iterations::Int, seconds::Float64) where T <: AbstractFloat
     @info "Function: benchmark_algorithm"
     @info "Arguments" benchmark n d r seed iterations seconds nthreads()
     rng = MersenneTwister(seed)
@@ -85,7 +85,7 @@ function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::In
     @info "Started: $(time)"
     for i in 1:iterations
         @info "Iteration: $(i) / $(iterations)"
-        p = rand(rng, n, d)
+        p = rand(rng, T, n, d)
         t = benchmark(p, r, seconds)
         time2 = Time(now())
         @info "Time: $(Time(time2 - time))"
@@ -96,11 +96,11 @@ function run_benchmark(benchmark::Function, n::Int, d::Int, r::Float64, seed::In
     return trials
 end
 
-struct Benchmark
+struct Benchmark{T<:AbstractFloat}
     benchmark::String
     n::Int
     d::Int
-    r::Float64
+    r::T
     seed::Int
     trials::Vector{BenchmarkTools.Trial}
     nthreads::Int
@@ -109,7 +109,7 @@ struct Benchmark
     cpu_info::Vector{Sys.CPUinfo}
 end
 
-function Benchmark(benchmark::String, n::Int, d::Int, r::Float64, seed::Int, iterations::Int, seconds::Float64)
+function Benchmark(benchmark::String, n::Int, d::Int, r::T, seed::Int, iterations::Int, seconds::Float64) where T <: AbstractFloat
     trials = run_benchmark(benchmark_functions[benchmark], n, d, r, seed, iterations, seconds)
     Benchmark(benchmark, n, d, r, seed, trials, nthreads(), now(), VERSION, cpu_info())
 end

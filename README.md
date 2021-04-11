@@ -15,6 +15,7 @@ Benchmark("cell_list_serial", n, d, r, seed, iterations, seconds)
 Benchmark("cell_list_threads", n, d, r, seed, iterations, seconds)
 Benchmark("brute_force", n, d, r, seed, iterations, seconds)
 Benchmark("cell_lists", n, d, r, seed, iterations, seconds)
+Benchmark("cell_lists", n, d, Float32(r), seed, iterations, seconds)
 Benchmark("near_neighbors_serial", n, d, r, seed, iterations, seconds)
 Benchmark("near_neighbors_threads", n, d, r, seed, iterations, seconds)
 ```
